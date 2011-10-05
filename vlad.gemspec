@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.test_files = ["test/test_vlad.rb", "test/test_vlad_subversion.rb"]
 
   s.add_runtime_dependency('rake', "~> 0.8")
-  s.add_runtime_dependency('rake-remote-task', "~> 2.0")
+  s.add_runtime_dependency('rake-remote_task', "~> 2.0")
 
   s.add_development_dependency('hoe', "~> 2.12")
   s.add_development_dependency('hoe-doofus')
