@@ -12,12 +12,12 @@ namespace :vlad do
   desc "Run the migrate rake task for the the app. By default this is run in
     the latest app directory.  You can run migrations for the current app
     directory by setting :migrate_target to :current.  Additional environment
-    variables can be passed to rake via the migrate_env variable.".cleanup
+    variables can be passed to rake via the migrate_args variable.".cleanup
 
   # No application files are on the DB machine, also migrations should only be
   # run once.
   remote_task :migrate, :roles => :app do
-    break unless target_host == Rake::RemoteTask.hosts_for(:app).first
+    break unless Rake::RemoteTask.hosts_for(:app).include?(target_host)
 
     directory = case migrate_target.to_sym
                 when :current then current_path

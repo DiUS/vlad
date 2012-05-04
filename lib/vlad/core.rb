@@ -63,13 +63,14 @@ namespace :vlad do
     symlink = false
     begin
       commands = ["umask #{umask}"]
+     
       unless skip_scm
         commands << "cd #{scm_path}"
         commands << "#{source.checkout revision, scm_path}"
       end
       commands << "#{source.export revision, release_path}"
       commands << "chmod -R g+w #{latest_release}"
-      
+
       unless shared_paths.empty?
         commands << "rm -rf #{shared_paths.values.map { |p| File.join(latest_release, p) }.join(' ')}"
       end
@@ -84,7 +85,13 @@ namespace :vlad do
       commands << "chgrp -R #{perm_group} #{latest_release}" if perm_group
 
       run commands.join(" && ")
-      Rake::Task['vlad:update_symlinks'].invoke
+
+      unless shared_paths.empty?
+        ops = shared_paths.map do |sp, rp|
+          "ln -s #{shared_path}/#{sp} #{latest_release}/#{rp}"
+        end
+        run ops.join(' && ') unless ops.empty?
+      end
 
       symlink = true
       commands = [

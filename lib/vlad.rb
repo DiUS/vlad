@@ -21,7 +21,7 @@ module Vlad
 
   ##
   # This is the version of Vlad you are running.
-  VERSION = '2.2.3'
+  VERSION = '2.2.5'
 
   ##
   # Loads tasks file +tasks_file+ and various recipe styles as a hash
@@ -61,6 +61,8 @@ module Vlad
       next if recipe.nil? or flavor == :config
       require "vlad/#{recipe}"
     end
+
+    set :skip_scm, false
 
     Kernel.load recipes[:config]
     Kernel.load "config/deploy_#{ENV['to']}.rb" if ENV['to']
